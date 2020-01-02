@@ -15,8 +15,8 @@ void Game::Create()
 {
 	Scene* mainScene = new(nothrow) Scene();
 	FlyingCamera mainCamera = mainScene->GetCamera();
-	mainCamera.SetPosition(Vector3D(-5.0f, 10.0f, 20.0f));
-	mainCamera.SetOrientation(Vector3D(20.0f, 35.0f, 0.0f));
+	mainCamera.SetPosition(Vector3D(7.2f, 11.0f, 7.0f));
+	mainCamera.SetOrientation(Vector3D(38.0f, -45.0f, 0.0f));
 	mainScene->SetCamera(mainCamera);
 	int floor= 0;
 	int index = 0;
@@ -25,8 +25,8 @@ void Game::Create()
 		for (int i = 0; i < 7; i++) {
 			for (int j = 0; j <= i; j++) {
 				pointerToBlocks[index] = Block(
-					Vector3D((i + j-i), (-i), (-j+i)),
-					Color((0.2+i*0.2), (0.4-i * 0.2), (0.7)), Vector3D(0, 0, 0),
+					Vector3D((i + j-i), (7-i), (-j+i)),
+					Color((0.2), (0.4), (0.7)), Vector3D(0, 0, 0),
 					0.1
 				);
 				mainScene->AddGameObject(pointerToBlocks + index);

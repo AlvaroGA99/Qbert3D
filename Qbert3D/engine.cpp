@@ -32,8 +32,7 @@ Game theGame {};
 
 void initObjects()
 {
-	//theGame.Create();
-	theGame.Create("juego.json");
+	theGame.Create();
 }
 
 void drawObjects()

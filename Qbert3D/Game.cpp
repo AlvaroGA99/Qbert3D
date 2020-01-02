@@ -5,10 +5,8 @@
 #include "Torus.h"
 #include "Cuboid.h"
 #include "Model.h"
-#include <nlohmann/json.hpp>
-using json = nlohmann::json;
 
-void Game::Create()
+void Game::Create() 
 {
 	Scene* mainScene = new(nothrow) Scene();
 	FlyingCamera mainCamera = mainScene->GetCamera();
@@ -52,7 +50,7 @@ void Game::Create()
 
 	Sphere* pointerToSphere = nullptr;
 
-
+	
 	pointerToSphere = new(nothrow) Sphere(
 		Vector3D((0.3), (0.4), (0.9)),
 		Color((0.8), (0.7), (0.2)),
@@ -112,45 +110,6 @@ void Game::Create()
 
 	this->scenes.push_back(mainScene);
 	this->activeScene = mainScene;
-}
-
-void Game::Create(const string& file) 
-{
-	ifstream inputFileStream(file);
-	json jsonInfo;
-	if (inputFileStream.is_open() && inputFileStream.good())
-	{
-		inputFileStream >> jsonInfo;
-
-		cout << jsonInfo << endl;
-
-		for (int idx = 0; idx < jsonInfo.at("scenes").size(); idx++)
-		{
-			json currentScene = jsonInfo.at("scenes").at(idx);
-
-			Scene* scene = new Scene(Vector3D(currentScene.at("limit").at("x"), currentScene.at("limit").at("x"), currentScene.at("limit").at("x")));
-			for (int idx2 = 0; idx2 < currentScene.at("objects").size(); idx2++)
-			{
-				json currentSolid = currentScene.at("objects").at(idx2);
-				if (currentSolid.at("type") == "cube")
-				{
-					Cube* cube = new Cube();
-					cube->SetPosition(Vector3D(currentSolid.at("position").at("x"), currentSolid.at("position").at("y"), currentSolid.at("position").at("z")));
-					cube->SetSpeed(Vector3D(currentSolid.at("velocity").at("x"), currentSolid.at("velocity").at("y"), currentSolid.at("velocity").at("z")));
-					cube->SetColor(Color(currentSolid.at("color").at("x"), currentSolid.at("color").at("y"), currentSolid.at("color").at("z")));
-					cube->SetSize(currentSolid.at("size"));
-					scene->AddGameObject(cube);
-				}
-			}
-			this->scenes.push_back(scene);
-		}
-		this->activeScene = this->scenes[0];
-	}
-	else
-	{
-		cout << "Error leyendo archivo: " << file << endl;
-	}
-	
 }
 
 void Game::Render() 

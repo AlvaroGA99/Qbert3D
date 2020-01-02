@@ -1,7 +1,6 @@
 #pragma once
 #include "Scene.h"
 #include <chrono>
-#include <string>
 	
 using namespace std::chrono;
 
@@ -22,7 +21,6 @@ public:
 	Game() : activeScene(nullptr), initialMilliseconds(duration_cast<milliseconds>(system_clock::now().time_since_epoch())), lastUpdatedTime(0) {}
 
 	void Create();
-	void Create(const string& file);
 	void Render();
 	void Update();
 	void ProcessMouseMovement(const int& xPosition, const int& yPosition);

@@ -28,6 +28,9 @@
     <Filter Include="Archivos de encabezado\Elements">
       <UniqueIdentifier>{387b8858-db3e-43b5-9c4f-43472b10fb78}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Archivos de encabezado\Qbert3D">
+      <UniqueIdentifier>{b15580c2-0777-4894-81cb-8103af9cd4cd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Vector3D.h">
@@ -74,6 +77,18 @@
     </ClInclude>
     <ClInclude Include="Torus.h">
       <Filter>Archivos de encabezado\Elements</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Archivos de encabezado\Qbert3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Archivos de encabezado\Qbert3D</Filter>
+    </ClInclude>
+    <ClInclude Include="QbertObject.h">
+      <Filter>Archivos de encabezado\Qbert3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Block.h">
+      <Filter>Archivos de encabezado\Qbert3D</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -125,8 +140,21 @@
     <ClCompile Include="Vector3D.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="QbertObject.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="Block.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="juego.json" />
   </ItemGroup>
 </Project>

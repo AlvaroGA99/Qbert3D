@@ -33,8 +33,17 @@ void Game::Create()
 				index++;
 			}
 		}		
-	}
+	}	
+	QbertObject* player = new(nothrow) QbertObject(
+		Vector3D((0), (8), (0)),
+		Color((0.8), (0.7), (0.2)),
+		Vector3D(),
+		Vector3D()
+	);
 
+	player->SetIsAffectedByGravity(false);
+
+	mainScene->AddGameObject(player);
 	this->scenes.push_back(mainScene);
 	this->activeScene = mainScene;
 }

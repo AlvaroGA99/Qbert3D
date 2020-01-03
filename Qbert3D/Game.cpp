@@ -34,16 +34,16 @@ void Game::Create()
 			}
 		}		
 	}	
-	QbertObject* player = new(nothrow) QbertObject(
+	this->thePlayer = new(nothrow) Player(
 		Vector3D((0), (8), (0)),
 		Color((0.8), (0.7), (0.2)),
 		Vector3D(),
 		Vector3D()
 	);
 
-	player->SetIsAffectedByGravity(false);
+	this->thePlayer->SetIsAffectedByGravity(false);
 
-	mainScene->AddGameObject(player);
+	mainScene->AddGameObject(this->thePlayer);
 	this->scenes.push_back(mainScene);
 	this->activeScene = mainScene;
 }
@@ -71,6 +71,9 @@ void Game::ProcessMouseMovement(const int& xPosition, const int& yPosition)
 
 void Game::ProcessKeyPressed(const unsigned char& key, const int& xPosition, const int& yPosition)
 {
+	if (key=='u') {
+		this->thePlayer->move(0);
+	}
 	this->activeScene->ProcessKeyPressed(key, xPosition, yPosition);
 }
 

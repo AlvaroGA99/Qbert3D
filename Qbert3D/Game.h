@@ -1,5 +1,7 @@
 #pragma once
 #include "Scene.h"
+#include "Enemy.h"
+#include "Player.h"
 #include <chrono>
 	
 using namespace std::chrono;
@@ -15,10 +17,10 @@ private:
 
 	Scene* activeScene;
 	vector<Scene*> scenes;
-
+	Player* thePlayer;
 public:
 
-	Game() : activeScene(nullptr), initialMilliseconds(duration_cast<milliseconds>(system_clock::now().time_since_epoch())), lastUpdatedTime(0) {}
+	Game() : thePlayer(nullptr), activeScene(nullptr), initialMilliseconds(duration_cast<milliseconds>(system_clock::now().time_since_epoch())), lastUpdatedTime(0) {}
 
 	void Create();
 	void Render();

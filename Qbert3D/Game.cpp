@@ -78,8 +78,9 @@ void Game::Update()
 			thePlayer->SetPosition(Vector3D(roundf(thePlayer->GetPosition().GetX()), roundf(thePlayer->GetPosition().GetY()), roundf(thePlayer->GetPosition().GetZ())));
 
 			for (int i = 0; i < MAPSIZE; i++) {
-				if (((pointerToBlocks + i)->GetPosition().GetX() == thePlayer->GetPosition().GetX()) && ((pointerToBlocks + i)->GetPosition().GetZ() == thePlayer->GetPosition().GetZ())) {
-
+				if ((((pointerToBlocks + i)->GetPosition().GetX() == thePlayer->GetPosition().GetX()) && ((pointerToBlocks + i)->GetPosition().GetZ() == thePlayer->GetPosition().GetZ())) && !((pointerToBlocks + i)->GetColor() == Color(1, 0.5, 0))) {
+					contadorBloques++;
+					cout << "Llevas " << contadorBloques << " bloques coloreados" << endl;
 					(pointerToBlocks + i)->SetColor(Color(1, 0.5, 0));
 				}
 				/*

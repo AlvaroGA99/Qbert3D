@@ -21,9 +21,10 @@ private:
 	Player* thePlayer;
 	Vector3D auxPos;
 	Block* pointerToBlocks;
+	int contadorBloques;
 public:
 
-	Game() : auxPos(Vector3D()), pointerToBlocks(nullptr), thePlayer(nullptr), activeScene(nullptr), initialMilliseconds(duration_cast<milliseconds>(system_clock::now().time_since_epoch())), lastUpdatedTime(0) {}
+	Game() : contadorBloques(0),auxPos(Vector3D()), pointerToBlocks(nullptr), thePlayer(nullptr), activeScene(nullptr), initialMilliseconds(duration_cast<milliseconds>(system_clock::now().time_since_epoch())), lastUpdatedTime(0) {}
 
 	void Create();
 	void Render();

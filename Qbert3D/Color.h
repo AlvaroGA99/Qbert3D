@@ -14,5 +14,7 @@ public:
 	inline void SetRed(const float& redToSet) { this->red = (redToSet >= 0.0 && redToSet <= 1.0 ? redToSet : this->red); }
 	inline void SetGreen(const float& greenToSet) { this->red = (greenToSet >= 0.0 && greenToSet <= 1.0 ? greenToSet : this->green); }
 	inline void SetBlue(const float& blueToSet) { this->red = (blueToSet >= 0.0 && blueToSet <= 1.0 ? blueToSet : this->blue); }
+
+	bool operator==(const Color& b);
 };
 

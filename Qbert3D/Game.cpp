@@ -44,6 +44,15 @@ void Game::Create()
 	mainScene->AddGameObject(this->thePlayer);
 	this->scenes.push_back(mainScene);
 	this->activeScene = mainScene;
+
+	std::cout << endl << endl << "ñ---------------------------------------------------------ñ" << endl;
+	std::cout << "|                         QBERT-3D                        |" << endl;				   
+	std::cout << "ñ---------------------------------------------------------ñ" << endl;
+	std::cout << "| Juego desarrollado por:                                 |" << endl;
+	std::cout << "|   + Alvaro Gonzalez Alcazar                             |" << endl;
+	std::cout << "|   + Alejandro Rodríguez Muñoz                           |" << endl;
+	std::cout << "|                                                         |" << endl;
+	std::cout << "ñ---------------------------------------------------------ñ" << endl << endl << endl;
 }
 
 void Game::Render() 
@@ -85,6 +94,11 @@ void Game::Update()
 			thePlayer->SetIsAffectedByGravity(false);
 			thePlayer->SetSpeed(Vector3D(0, 0, 0));
 			thePlayer->SetPosition(Vector3D(0, 8, 0));
+			std::cout << endl << endl << "ñ---------------------------------------------------------ñ" << endl;
+			std::cout << "|                                                         |" << endl;
+			std::cout << "|                    Vidas restantes:" <<  thePlayer->GetLives() << "                    |" << endl;				   
+			std::cout << "|                                                         |" << endl;
+			std::cout << "ñ---------------------------------------------------------ñ" << endl;
 		}
 	}
 }

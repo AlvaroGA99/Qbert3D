@@ -1,6 +1,6 @@
 #include "QbertObject.h"
 
-void QbertObject::move(int dir) {
+void QbertObject::Move(int dir) {
 	this->SetPrevPosition(this->GetPosition());
 	switch (dir) {
 		case 0:			

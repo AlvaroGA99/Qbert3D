@@ -39,7 +39,7 @@ void Scene::Update(const float& time)
 	for (int idx = 0; idx < this->gameObjects.size(); idx++)
 	{
 		this->gameObjects[idx]->Update(time, this->GetGravity());
-
+		/*
 		if (this->gameObjects[idx]->GetPosition().GetX() > this->GetSize().GetX() || this->gameObjects[idx]->GetPosition().GetX() < 0) {
 			this->gameObjects[idx]->SetSpeed(Vector3D(this->gameObjects[idx]->GetSpeed().GetX() * -1, this->gameObjects[idx]->GetSpeed().GetY(), this->gameObjects[idx]->GetSpeed().GetZ()));
 		}
@@ -49,6 +49,7 @@ void Scene::Update(const float& time)
 		if (this->gameObjects[idx]->GetPosition().GetZ() > this->GetSize().GetZ() || this->gameObjects[idx]->GetPosition().GetZ() < 0) {
 			this->gameObjects[idx]->SetSpeed(Vector3D(this->gameObjects[idx]->GetSpeed().GetX(), this->gameObjects[idx]->GetSpeed().GetY(), this->gameObjects[idx]->GetSpeed().GetZ() * -1));
 		}
+		*/
 
 	}
 }

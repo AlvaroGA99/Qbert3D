@@ -5,6 +5,7 @@
 #include "Torus.h"
 #include "Cuboid.h"
 #include "Model.h"
+#include <Math.h>
 
 #define MAPSIZE 28
 
@@ -64,12 +65,13 @@ void Game::Update()
 				thePlayer->SetSpeed(Vector3D(0, 0, 0));
 			}
 		}*/
-		//x z 
-		thePlayer->GetPosition();
-		if (!(thePlayer->GetSpeed() == Vector3D(0, 0, 0)) && ((((float)thePlayer->GetPosition().GetX() - (int)thePlayer->GetPosition().GetX())>1) || (((float)thePlayer->GetPosition().GetZ() - (int)thePlayer->GetPosition().GetZ()) > 1))) {
-			std::cout << "hola";
-			thePlayer->SetSpeed(Vector3D(0, 0, 0));
+		std::cout << "X: " << thePlayer->GetPosition().GetX() << " " << thePlayer->GetPrevPosition().GetX() << endl;
+		std::cout << "Y: " << thePlayer->GetPosition().GetY() << " " << thePlayer->GetPrevPosition().GetY() << endl;
+		std::cout << "Z: " << thePlayer->GetPosition().GetZ() << " " << thePlayer->GetPrevPosition().GetZ() << endl << endl;
 
+		if (!(thePlayer->GetSpeed() == Vector3D(0, 0, 0)) && ((abs(thePlayer->GetPosition().GetX() - thePlayer->GetPrevPosition().GetX()) >= 1) || abs(thePlayer->GetPosition().GetZ() - thePlayer->GetPrevPosition().GetZ()) >= 1)) {
+			thePlayer->SetSpeed(Vector3D(0, 0, 0));
+			thePlayer->SetPosition(Vector3D(roundf(thePlayer->GetPosition().GetX()), roundf(thePlayer->GetPosition().GetY()), roundf(thePlayer->GetPosition().GetZ())));
 		}
 
 	}

@@ -2,6 +2,7 @@
 #include "Scene.h"
 #include "Enemy.h"
 #include "Player.h"
+#include "Block.h"
 #include <chrono>
 	
 using namespace std::chrono;
@@ -19,9 +20,10 @@ private:
 	vector<Scene*> scenes;
 	Player* thePlayer;
 	Vector3D auxPos;
+	Block* pointerToBlocks;
 public:
 
-	Game() : auxPos(Vector3D()),thePlayer(nullptr), activeScene(nullptr), initialMilliseconds(duration_cast<milliseconds>(system_clock::now().time_since_epoch())), lastUpdatedTime(0) {}
+	Game() : auxPos(Vector3D()), pointerToBlocks(nullptr), thePlayer(nullptr), activeScene(nullptr), initialMilliseconds(duration_cast<milliseconds>(system_clock::now().time_since_epoch())), lastUpdatedTime(0) {}
 
 	void Create();
 	void Render();

@@ -58,6 +58,10 @@ Vector3D Vector3D::operator/(const float& m) {
 	return result;
 }
 
+bool Vector3D::operator==(const Vector3D& b) {
+	return (x == b.x) && (y == b.y) && (z == b.z);
+}
+
 float Vector3D::DotProduct(const Vector3D& v) {
 	float result;
 	result = x * v.x + y * v.y + z * v.z;

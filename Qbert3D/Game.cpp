@@ -5,9 +5,6 @@
 #include "Torus.h"
 #include "Cuboid.h"
 #include "Model.h"
-#include "Enemy.h"
-#include "Player.h"
-#include "Block.h"
 
 #define MAPSIZE 28
 
@@ -20,7 +17,7 @@ void Game::Create()
 	mainScene->SetCamera(mainCamera);
 	int floor= 0;
 	int index = 0;
-	Block* pointerToBlocks = new(nothrow) Block[MAPSIZE];
+	pointerToBlocks = new(nothrow) Block[MAPSIZE];
 	if (pointerToBlocks != nullptr) {
 		for (int i = 0; i < 7; i++) {
 			for (int j = 0; j <= i; j++) {
@@ -61,6 +58,20 @@ void Game::Update()
 	{
 		this->activeScene->Update(TIME_INCREMENT);
 		this->lastUpdatedTime = currentTime.count() - this->initialMilliseconds.count();
+
+		/*for (int i = 0; i < MAPSIZE; i++) {
+			if (!(thePlayer->GetSpeed()==Vector3D(0,0,0)) && thePlayer->GetPosition().GetY() + 0.4 > (pointerToBlocks + i)->GetPosition().GetY()) {
+				thePlayer->SetSpeed(Vector3D(0, 0, 0));
+			}
+		}*/
+		//x z 
+		thePlayer->GetPosition();
+		if (!(thePlayer->GetSpeed() == Vector3D(0, 0, 0)) && ((((float)thePlayer->GetPosition().GetX() - (int)thePlayer->GetPosition().GetX())>1) || (((float)thePlayer->GetPosition().GetZ() - (int)thePlayer->GetPosition().GetZ()) > 1))) {
+			std::cout << "hola";
+			thePlayer->SetSpeed(Vector3D(0, 0, 0));
+
+		}
+
 	}
 }
 
@@ -70,24 +81,31 @@ void Game::ProcessMouseMovement(const int& xPosition, const int& yPosition)
 }
 
 void Game::ProcessKeyPressed(const unsigned char& key, const int& xPosition, const int& yPosition)
-{
-	
+{	
 	switch (key) {
-	case 'w' :
-		if (this->thePlayer->GetSpeed)
-		this->thePlayer->move(0);
+	case 'i' :
+		if (this->thePlayer->GetSpeed() == Vector3D(0, 0, 0)) {
+			this->thePlayer->move(0);
+		}
 		break;
-	case 'a' :
-		this->thePlayer->move(1);
+	case 'j' :
+		if (this->thePlayer->GetSpeed() == Vector3D(0, 0, 0)) {
+			this->thePlayer->move(1);
+		}
 		break;
-	case 's' :
-		this->thePlayer->move(2);
+	case 'k' :
+		if (this->thePlayer->GetSpeed() == Vector3D(0, 0, 0)) {
+			this->thePlayer->move(2);
+		}
 		break;
-	case 'd' :
-		this->thePlayer->move(3);
+	case 'l' :
+		if (this->thePlayer->GetSpeed() == Vector3D(0, 0, 0)) {
+			this->thePlayer->move(3);
+		}
 		break;
-	}
-	this->activeScene->ProcessKeyPressed(key, xPosition, yPosition);
+	default:
+		this->activeScene->ProcessKeyPressed(key, xPosition, yPosition);
+	}	
 }
 
 void Game::ProcessMouseClick(const int& button, const int& state, const int& xPosition, const int& yPosition) 

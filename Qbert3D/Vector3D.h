@@ -32,6 +32,7 @@ public:
 	Vector3D operator*(const float& b);
 	Vector3D operator*(const float& b) const;
 	Vector3D operator/(const float& b);
+	bool operator==(const Vector3D& b);
 	float operator*(const Vector3D& v);
 };
 

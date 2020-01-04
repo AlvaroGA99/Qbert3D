@@ -72,6 +72,14 @@ void Game::Update()
 		if (!(thePlayer->GetSpeed() == Vector3D(0, 0, 0)) && ((abs(thePlayer->GetPosition().GetX() - thePlayer->GetPrevPosition().GetX()) >= 1) || abs(thePlayer->GetPosition().GetZ() - thePlayer->GetPrevPosition().GetZ()) >= 1)) {
 			thePlayer->SetSpeed(Vector3D(0, 0, 0));
 			thePlayer->SetPosition(Vector3D(roundf(thePlayer->GetPosition().GetX()), roundf(thePlayer->GetPosition().GetY()), roundf(thePlayer->GetPosition().GetZ())));
+			for (int i = 0; i < MAPSIZE; i++) {
+				if (((pointerToBlocks + i)->GetPosition().GetX() == thePlayer->GetPosition().GetX())&&((pointerToBlocks + i)->GetPosition().GetZ() == thePlayer->GetPosition().GetZ())) {
+					
+					(pointerToBlocks + i)->SetColor(Color(1, 0.5, 0));
+				}
+				
+			}
+			
 		}
 
 	}

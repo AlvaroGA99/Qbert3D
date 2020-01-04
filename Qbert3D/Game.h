@@ -18,9 +18,10 @@ private:
 	Scene* activeScene;
 	vector<Scene*> scenes;
 	Player* thePlayer;
+	Vector3D auxPos;
 public:
 
-	Game() : thePlayer(nullptr), activeScene(nullptr), initialMilliseconds(duration_cast<milliseconds>(system_clock::now().time_since_epoch())), lastUpdatedTime(0) {}
+	Game() : auxPos(Vector3D()),thePlayer(nullptr), activeScene(nullptr), initialMilliseconds(duration_cast<milliseconds>(system_clock::now().time_since_epoch())), lastUpdatedTime(0) {}
 
 	void Create();
 	void Render();

@@ -71,8 +71,21 @@ void Game::ProcessMouseMovement(const int& xPosition, const int& yPosition)
 
 void Game::ProcessKeyPressed(const unsigned char& key, const int& xPosition, const int& yPosition)
 {
-	if (key=='u') {
+	
+	switch (key) {
+	case 'w' :
+		if (this->thePlayer->GetSpeed)
 		this->thePlayer->move(0);
+		break;
+	case 'a' :
+		this->thePlayer->move(1);
+		break;
+	case 's' :
+		this->thePlayer->move(2);
+		break;
+	case 'd' :
+		this->thePlayer->move(3);
+		break;
 	}
 	this->activeScene->ProcessKeyPressed(key, xPosition, yPosition);
 }

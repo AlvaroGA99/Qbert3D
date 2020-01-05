@@ -45,12 +45,17 @@ void Game::Create()
 	this->scenes.push_back(mainScene);
 	this->activeScene = mainScene;
 
+	continueGame = true;
+
 	std::cout << endl << endl << "ñ---------------------------------------------------------ñ" << endl;
 	std::cout << "|                         QBERT-3D                        |" << endl;				   
 	std::cout << "ñ---------------------------------------------------------ñ" << endl;
+	std::cout << "|                                                         |" << endl;
 	std::cout << "| Juego desarrollado por:                                 |" << endl;
-	std::cout << "|   + Alvaro Gonzalez Alcazar                             |" << endl;
-	std::cout << "|   + Alejandro Rodríguez Muñoz                           |" << endl;
+	std::cout << "|                                                         |" << endl;
+	std::cout << "|   +  Alvaro Gonzalez Alcazar                            |" << endl;
+	std::cout << "|   +  Alejandro Rodriguez Munoz                          |" << endl;
+	std::cout << "|                                                         |" << endl;
 	std::cout << "|                                                         |" << endl;
 	std::cout << "ñ---------------------------------------------------------ñ" << endl << endl << endl;
 }
@@ -66,40 +71,77 @@ void Game::Update()
 
 	if ((currentTime.count() - this->initialMilliseconds.count()) - this->lastUpdatedTime > UPDATE_PERIOD)
 	{
-		this->activeScene->Update(TIME_INCREMENT);
-		this->lastUpdatedTime = currentTime.count() - this->initialMilliseconds.count();
+		if (continueGame) {
+			this->activeScene->Update(TIME_INCREMENT);
+			this->lastUpdatedTime = currentTime.count() - this->initialMilliseconds.count();
 
-		if (thePlayer->GetPosition().GetX() <= -1 || thePlayer->GetPosition().GetZ() <= -1 || thePlayer->GetPosition().GetX() + thePlayer->GetPosition().GetZ() >= 7) {
-			thePlayer->SetSpeed(Vector3D(0, -.3, 0));
-			thePlayer->SetIsAffectedByGravity(true);
-		}
-		else if (!(thePlayer->GetSpeed() == Vector3D(0, 0, 0)) && ((abs(thePlayer->GetPosition().GetX() - thePlayer->GetPrevPosition().GetX()) >= 1) || abs(thePlayer->GetPosition().GetZ() - thePlayer->GetPrevPosition().GetZ()) >= 1)) {
-			thePlayer->SetSpeed(Vector3D(0, 0, 0));
-			thePlayer->SetPosition(Vector3D(roundf(thePlayer->GetPosition().GetX()), roundf(thePlayer->GetPosition().GetY()), roundf(thePlayer->GetPosition().GetZ())));
+			if (thePlayer->GetPosition().GetX() <= -1 || thePlayer->GetPosition().GetZ() <= -1 || thePlayer->GetPosition().GetX() + thePlayer->GetPosition().GetZ() >= 7) {
+				thePlayer->SetSpeed(Vector3D(0, -.3, 0));
+				thePlayer->SetIsAffectedByGravity(true);
+			}
+			else if (!(thePlayer->GetSpeed() == Vector3D(0, 0, 0)) && ((abs(thePlayer->GetPosition().GetX() - thePlayer->GetPrevPosition().GetX()) >= 1) || abs(thePlayer->GetPosition().GetZ() - thePlayer->GetPrevPosition().GetZ()) >= 1)) {
+				thePlayer->SetSpeed(Vector3D(0, 0, 0));
+				thePlayer->SetPosition(Vector3D(roundf(thePlayer->GetPosition().GetX()), roundf(thePlayer->GetPosition().GetY()), roundf(thePlayer->GetPosition().GetZ())));
 
-			for (int i = 0; i < MAPSIZE; i++) {
-				if ((((pointerToBlocks + i)->GetPosition().GetX() == thePlayer->GetPosition().GetX()) && ((pointerToBlocks + i)->GetPosition().GetZ() == thePlayer->GetPosition().GetZ())) && !((pointerToBlocks + i)->GetColor() == Color(1, 0.5, 0))) {
-					contadorBloques++;
-					cout << "Llevas " << contadorBloques << " bloques coloreados" << endl;
-					(pointerToBlocks + i)->SetColor(Color(1, 0.5, 0));
+				for (int i = 0; i < MAPSIZE; i++) {
+					if ((((pointerToBlocks + i)->GetPosition().GetX() == thePlayer->GetPosition().GetX()) && ((pointerToBlocks + i)->GetPosition().GetZ() == thePlayer->GetPosition().GetZ())) && !((pointerToBlocks + i)->GetColor() == Color(1, 0.5, 0))) {
+						contadorBloques++;
+						cout << endl << "   * Llevas " << contadorBloques << " bloques coloreados" << endl;
+						(pointerToBlocks + i)->SetColor(Color(1, 0.5, 0));
+						if (contadorBloques == MAPSIZE) {
+							std::cout << endl << endl << "ñ---------------------------------------------------------ñ" << endl;
+							std::cout << "|                                                         |" << endl;
+							std::cout << "|                      HAS GANADO !!!!!!                  |" << endl;
+							std::cout << "|                                                         |" << endl;
+							std::cout << "ñ---------------------------------------------------------ñ" << endl;
+
+							//pauseGame(); win(); nextLevel();
+							continueGame = false;
+						}
+					}
+					/*
+					std::cout << "X: " << thePlayer->GetPosition().GetX() << " " << thePlayer->GetPrevPosition().GetX() << endl;
+					std::cout << "Y: " << thePlayer->GetPosition().GetY() << " " << thePlayer->GetPrevPosition().GetY() << endl;
+					std::cout << "Z: " << thePlayer->GetPosition().GetZ() << " " << thePlayer->GetPrevPosition().GetZ() << endl << endl;
+					*/
 				}
-				/*
-				std::cout << "X: " << thePlayer->GetPosition().GetX() << " " << thePlayer->GetPrevPosition().GetX() << endl;
-				std::cout << "Y: " << thePlayer->GetPosition().GetY() << " " << thePlayer->GetPrevPosition().GetY() << endl;
-				std::cout << "Z: " << thePlayer->GetPosition().GetZ() << " " << thePlayer->GetPrevPosition().GetZ() << endl << endl;
-				*/
-			}			
-		}
-		if (thePlayer->GetPosition().GetY() <= -4) {
-			thePlayer->LoseLife();
-			thePlayer->SetIsAffectedByGravity(false);
-			thePlayer->SetSpeed(Vector3D(0, 0, 0));
-			thePlayer->SetPosition(Vector3D(0, 8, 0));
-			std::cout << endl << endl << "ñ---------------------------------------------------------ñ" << endl;
-			std::cout << "|                                                         |" << endl;
-			std::cout << "|                    Vidas restantes:" <<  thePlayer->GetLives() << "                    |" << endl;				   
-			std::cout << "|                                                         |" << endl;
-			std::cout << "ñ---------------------------------------------------------ñ" << endl;
+			}
+			if (thePlayer->GetPosition().GetY() <= -4) {
+				thePlayer->LoseLife();
+
+				if (thePlayer->GetLives() >= 0) {
+					std::cout << endl << endl << "ñ---------------------------------------------------------ñ" << endl;
+					std::cout << "|                                                         |" << endl;
+					std::cout << "|                    Vidas restantes:" << thePlayer->GetLives() << "                    |" << endl;
+					std::cout << "|                                                         |" << endl;
+					std::cout << "ñ---------------------------------------------------------ñ" << endl;
+				}
+				else {
+					//pauseGame();
+					continueGame = false;
+					std::cout << endl << endl << "ñ---------------------------------------------------------ñ" << endl;
+					std::cout << "|                                                         |" << endl;
+					std::cout << "|                     FIN DEL JUEGO                       |" << endl;
+					std::cout << "|                       CONTINUAR ?                       |" << endl;
+					std::cout << "|                                                         |" << endl;
+					std::cout << "ñ---------------------------------------------------------ñ" << endl;
+					std::cout << endl << "   * Si deseas continuar presiona 1, de lo contrario presiona 0: ";
+					std::cin >> continueGame;
+
+					if (continueGame) {
+						//restartGame();
+						thePlayer->SetLives(3);
+					}
+					else {
+						std::cout << "   * Gracias por jugar a QBERT-3D.";
+						//exitGame();
+					}
+				}
+
+				thePlayer->SetIsAffectedByGravity(false);
+				thePlayer->SetSpeed(Vector3D(0, 0, 0));
+				thePlayer->SetPosition(Vector3D(0, 8, 0));
+			}
 		}
 	}
 }
@@ -111,30 +153,39 @@ void Game::ProcessMouseMovement(const int& xPosition, const int& yPosition)
 
 void Game::ProcessKeyPressed(const unsigned char& key, const int& xPosition, const int& yPosition)
 {	
-	switch (key) {
-	case 'i' :
-		if (this->thePlayer->GetSpeed() == Vector3D(0, 0, 0)) {
-			this->thePlayer->Move(0);
+	if (continueGame) {
+		switch (key) {
+		case'w':
+		case 'W':
+			if (this->thePlayer->GetSpeed() == Vector3D(0, 0, 0)) {
+				this->thePlayer->Move(0);
+			}
+			break;
+		case 'a':
+		case 'A':
+			if (this->thePlayer->GetSpeed() == Vector3D(0, 0, 0)) {
+				this->thePlayer->Move(1);
+			}
+			break;
+		case 's':
+		case 'S':
+			if (this->thePlayer->GetSpeed() == Vector3D(0, 0, 0)) {
+				this->thePlayer->Move(2);
+			}
+			break;
+		case 'd':
+		case 'D':
+			if (this->thePlayer->GetSpeed() == Vector3D(0, 0, 0)) {
+				this->thePlayer->Move(3);
+			}
+			break;
+		default:
+			this->activeScene->ProcessKeyPressed(key, xPosition, yPosition);
 		}
-		break;
-	case 'j' :
-		if (this->thePlayer->GetSpeed() == Vector3D(0, 0, 0)) {
-			this->thePlayer->Move(1);
-		}
-		break;
-	case 'k' :
-		if (this->thePlayer->GetSpeed() == Vector3D(0, 0, 0)) {
-			this->thePlayer->Move(2);
-		}
-		break;
-	case 'l' :
-		if (this->thePlayer->GetSpeed() == Vector3D(0, 0, 0)) {
-			this->thePlayer->Move(3);
-		}
-		break;
-	default:
+	}
+	else {
 		this->activeScene->ProcessKeyPressed(key, xPosition, yPosition);
-	}	
+	}
 }
 
 void Game::ProcessMouseClick(const int& button, const int& state, const int& xPosition, const int& yPosition) 

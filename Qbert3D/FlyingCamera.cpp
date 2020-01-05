@@ -47,13 +47,13 @@ void FlyingCamera::ProcessMouseClick(const int& button, const int& state, const 
 void FlyingCamera::ProcessKeyPressed(unsigned char key, int px, int py)
 {
 	switch (key) {
-	case 'w':
-	case 'W':
-		this->Update(0.1f, Vector3D());
-		break;
-	case 's':
-	case 'S':
-		this->Update(-0.1f, Vector3D());
+	case 'i':
+	case 'I':
+		this->Update(0.4f, Vector3D());
+		break;	
+	case 'k':
+	case 'K':
+		this->Update(-0.4f, Vector3D());
 		break;
 	}
 }

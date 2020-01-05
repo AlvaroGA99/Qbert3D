@@ -12,7 +12,7 @@ private:
 
 public:
 	Sphere(Vector3D position, Color color, Vector3D speed, Vector3D orientation, float radius = .4, int slices = 20, int stacks = 20) :
-		GameObject(position, color, speed, orientation, Vector3D(), true), radius(radius), slices(slices), stacks(stacks) {}
+		GameObject(position, color, speed, orientation, Vector3D(), false), radius(radius), slices(slices), stacks(stacks) {}
 
 	inline float GetRadius() const { return this->radius; }
 	inline void SetRadius(const float& radiusToSet) { this->radius = radiusToSet; }

@@ -6,11 +6,13 @@
 #include "Cuboid.h"
 #include "Model.h"
 #include <Math.h>
+#include <ctime>
 
 #define MAPSIZE 28
 
 void Game::Create() 
 {
+	srand(time(NULL));
 	Scene* mainScene = new(nothrow) Scene();
 	FlyingCamera mainCamera = mainScene->GetCamera();
 	mainCamera.SetPosition(Vector3D(7.2f, 11.0f, 7.0f));
@@ -39,9 +41,12 @@ void Game::Create()
 		Vector3D()
 	);
 
+	Enemy* enemigo = new Enemy();
+
 	this->thePlayer->SetIsAffectedByGravity(false);
 
 	mainScene->AddGameObject(this->thePlayer);
+	mainScene->AddGameObject(enemigo);
 	this->scenes.push_back(mainScene);
 	this->activeScene = mainScene;
 

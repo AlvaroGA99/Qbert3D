@@ -10,11 +10,10 @@ Vector3D Enemy::InitPos() {
 	return Vector3D(x,y,z);
 }
 
-bool Enemy::CheckFall() {
+void Enemy::CheckFall() {
 	if (this->GetPosition().GetY() <= 8 - this->GetPosition().GetX() - this->GetPosition().GetZ()) {
 		this->SetIsAffectedByGravity(false);
 		this->SetPosition(Vector3D(this->GetPosition().GetX(), 8 - this->GetPosition().GetX() - this->GetPosition().GetZ(), this->GetPosition().GetZ()));
-		return true;
+		ready = true;
 	}
-	return false;
 }

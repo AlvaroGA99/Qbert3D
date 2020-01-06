@@ -94,7 +94,6 @@ void Game::Update()
 				level++;
 				blockCounter = 0;
 				ballCount = 0;
-				ready = false;
 				preCount = 50;
 				thePlayer->SetIsAffectedByGravity(false);
 				thePlayer->SetSpeed(Vector3D(0, 0, 0));
@@ -140,10 +139,15 @@ void Game::Update()
 				}
 			}
 
-			if (ballCount && !ready) {
+			if (ballCount) {
 				for (int i = 0; i < ballCount; i++) {
-					ready = (enemies + i)->CheckFall();
-					std::cout << "hola buenos dias" << endl;
+					//if (!((enemies + i)->GetReady())){						
+						(enemies + i)->CheckFall();			
+					//}
+					(enemies + i)->UpdatePreCount();
+					if ((enemies + i)->GetPreCount() == 0) {
+						(enemies + i)->Move(2 + rand() % 1);
+					}
 				}
 			}
 			

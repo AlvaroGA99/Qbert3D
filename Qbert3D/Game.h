@@ -28,6 +28,9 @@ private:
 	int preCount;
 	Color* blockColor;
 	Color* blockColor2;
+	Enemy* enemies;
+	int ballCount;
+	bool ready;
 public:
 
 	Game() : blockCounter(0),auxPos(Vector3D()), pointerToBlocks(nullptr), thePlayer(nullptr), activeScene(nullptr), initialMilliseconds(duration_cast<milliseconds>(system_clock::now().time_since_epoch())), lastUpdatedTime(0) {}

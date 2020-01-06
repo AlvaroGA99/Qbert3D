@@ -41,20 +41,24 @@ void Game::Create()
 				index++;
 			}
 		}		
-	}	
-	this->thePlayer = new(nothrow) Player(
+	}
+
+	enemies = new(nothrow) Enemy[3];
+	enemies[0] = Enemy();
+	enemies[1] = Enemy();
+	enemies[2] = Enemy();
+
+	this->thePlayer = new Player(
 		Vector3D((0), (8), (0)),
 		Color((0.8), (0.7), (0.2)),
 		Vector3D(),
 		Vector3D()
 	);
 
-	Enemy* enemigo = new Enemy();
-
-	this->thePlayer->SetIsAffectedByGravity(false);
-
 	mainScene->AddGameObject(this->thePlayer);
-	mainScene->AddGameObject(enemigo);
+	mainScene->AddGameObject(this->enemies);
+	mainScene->AddGameObject(this->enemies+1);
+	mainScene->AddGameObject(this->enemies);
 	this->scenes.push_back(mainScene);
 	this->activeScene = mainScene;
 
@@ -83,11 +87,15 @@ void Game::Update()
 
 	if ((currentTime.count() - this->initialMilliseconds.count()) - this->lastUpdatedTime > UPDATE_PERIOD)
 	{
+		//Inicio de nivel
 		if (nextLevel) {
 			if (preCount == 0) {
 				nextLevel = false;
 				level++;
 				blockCounter = 0;
+				ballCount = 0;
+				ready = false;
+				preCount = 50;
 				thePlayer->SetIsAffectedByGravity(false);
 				thePlayer->SetSpeed(Vector3D(0, 0, 0));
 				thePlayer->SetPosition(Vector3D(0, 8, 0));
@@ -114,13 +122,33 @@ void Game::Update()
 			preCount--;
 		}
 
-		if (continueGame) {
+		//Mientras se juega
+		if (continueGame) {			
+			this->activeScene->Update(TIME_INCREMENT);
+			this->lastUpdatedTime = currentTime.count() - this->initialMilliseconds.count();
+
 			if (thePlayer->GetPreCount() != 0) {
 				thePlayer->UpdatePreCount();
 			}
+			
+			if (!preCount) {
+				preCount = 50;
+				if (ballCount < (level + 7) / 3 && rand() % 10 <= 7+level/5) {
+					(enemies+ballCount)->SetPosition((enemies + ballCount)->InitPos());
+					(enemies + ballCount)->SetIsAffectedByGravity(true);
+					ballCount++;
+				}
+			}
 
-			this->activeScene->Update(TIME_INCREMENT);
-			this->lastUpdatedTime = currentTime.count() - this->initialMilliseconds.count();
+			if (ballCount && !ready) {
+				for (int i = 0; i < ballCount; i++) {
+					ready = (enemies + i)->CheckFall();
+					std::cout << "hola buenos dias" << endl;
+				}
+			}
+			
+
+			preCount--;
 
 			if (thePlayer->GetPosition().GetX() <= -1 || thePlayer->GetPosition().GetZ() <= -1 || thePlayer->GetPosition().GetX() + thePlayer->GetPosition().GetZ() >= 7) {
 				thePlayer->SetSpeed(Vector3D(0, -.3, 0));
@@ -162,6 +190,8 @@ void Game::Update()
 					*/
 				}
 			}
+
+			//Muerte del jugador
 			if (thePlayer->GetPosition().GetY() <= -4) {
 				thePlayer->LoseLife();
 

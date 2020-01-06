@@ -21,11 +21,16 @@ private:
 	Player* thePlayer;
 	Vector3D auxPos;
 	Block* pointerToBlocks;
-	int contadorBloques;
+	int blockCounter;
 	bool continueGame;
+	bool nextLevel;
+	int level;
+	int preCount;
+	Color* blockColor;
+	Color* blockColor2;
 public:
 
-	Game() : contadorBloques(0),auxPos(Vector3D()), pointerToBlocks(nullptr), thePlayer(nullptr), activeScene(nullptr), initialMilliseconds(duration_cast<milliseconds>(system_clock::now().time_since_epoch())), lastUpdatedTime(0) {}
+	Game() : blockCounter(0),auxPos(Vector3D()), pointerToBlocks(nullptr), thePlayer(nullptr), activeScene(nullptr), initialMilliseconds(duration_cast<milliseconds>(system_clock::now().time_since_epoch())), lastUpdatedTime(0) {}
 
 	void Create();
 	void Render();

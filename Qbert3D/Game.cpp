@@ -20,13 +20,21 @@ void Game::Create()
 	mainScene->SetCamera(mainCamera);
 	int floor= 0;
 	int index = 0;
+	
+	blockColor = new Color[6]{ Color((0.2), (0.4), (0.7)), Color((1), (0), (0)), Color((0.4), (0.7), (0.2)), Color((0.4), (0.2), (0.7)), Color((0.7), (0.12), (0.24)), Color((0.5), (.8), (0.55))};
+	blockColor2 = new Color[6]{ Color(1, 0.5, 0), Color(0.5, 1, 0), Color((0.4), (0.7), (0.2)), Color((0.4), (0.2), (0.7)), Color((0.7), (0.12), (0.24)), Color((0.5), (.8), (0.55)) };
+	continueGame = false;
+	nextLevel = true;
+	level = -1;
+	preCount = 90;
+
 	pointerToBlocks = new(nothrow) Block[MAPSIZE];
 	if (pointerToBlocks != nullptr) {
 		for (int i = 0; i < 7; i++) {
 			for (int j = 0; j <= i; j++) {
 				pointerToBlocks[index] = Block(
 					Vector3D((i + j-i), (7-i), (-j+i)),
-					Color((0.2), (0.4), (0.7)), Vector3D(0, 0, 0),
+					blockColor[0], Vector3D(0, 0, 0),
 					0.1
 				);
 				mainScene->AddGameObject(pointerToBlocks + index);
@@ -50,7 +58,6 @@ void Game::Create()
 	this->scenes.push_back(mainScene);
 	this->activeScene = mainScene;
 
-	continueGame = true;
 
 	std::cout << endl << endl << "ñ---------------------------------------------------------ñ" << endl;
 	std::cout << "|                         QBERT-3D                        |" << endl;				   
@@ -76,7 +83,42 @@ void Game::Update()
 
 	if ((currentTime.count() - this->initialMilliseconds.count()) - this->lastUpdatedTime > UPDATE_PERIOD)
 	{
+		if (nextLevel) {
+			if (preCount == 0) {
+				nextLevel = false;
+				level++;
+				blockCounter = 0;
+				thePlayer->SetIsAffectedByGravity(false);
+				thePlayer->SetSpeed(Vector3D(0, 0, 0));
+				thePlayer->SetPosition(Vector3D(0, 8, 0));
+				for (int i = 0; i < MAPSIZE; i++) {
+					(pointerToBlocks + i)->SetColor(blockColor[level]);
+				}
+				continueGame = true;
+
+				std::cout << endl << "ñ---------------------------------------------------------ñ" << endl;
+				std::cout << "|                                                         |" << endl;
+				std::cout << "|                         NIVEL " << level+1 << "                         |" << endl;
+				std::cout << "|                                                         |" << endl;
+				std::cout << "ñ---------------------------------------------------------ñ" << endl;
+
+				thePlayer->SetPreCount(10);
+			}
+			else if (preCount % 30 == 0) { 
+				std::cout << endl << "ñ---------------------------------------------------------ñ" << endl;
+				std::cout << "|                                                         |" << endl;
+				std::cout << "|                             " << preCount/30 << "                           |" << endl;
+				std::cout << "|                                                         |" << endl;
+				std::cout << "ñ---------------------------------------------------------ñ" << endl;				
+			}
+			preCount--;
+		}
+
 		if (continueGame) {
+			if (thePlayer->GetPreCount() != 0) {
+				thePlayer->UpdatePreCount();
+			}
+
 			this->activeScene->Update(TIME_INCREMENT);
 			this->lastUpdatedTime = currentTime.count() - this->initialMilliseconds.count();
 
@@ -89,19 +131,28 @@ void Game::Update()
 				thePlayer->SetPosition(Vector3D(roundf(thePlayer->GetPosition().GetX()), roundf(thePlayer->GetPosition().GetY()), roundf(thePlayer->GetPosition().GetZ())));
 
 				for (int i = 0; i < MAPSIZE; i++) {
-					if ((((pointerToBlocks + i)->GetPosition().GetX() == thePlayer->GetPosition().GetX()) && ((pointerToBlocks + i)->GetPosition().GetZ() == thePlayer->GetPosition().GetZ())) && !((pointerToBlocks + i)->GetColor() == Color(1, 0.5, 0))) {
-						contadorBloques++;
-						cout << endl << "   * Llevas " << contadorBloques << " bloques coloreados" << endl;
-						(pointerToBlocks + i)->SetColor(Color(1, 0.5, 0));
-						if (contadorBloques == MAPSIZE) {
-							std::cout << endl << endl << "ñ---------------------------------------------------------ñ" << endl;
-							std::cout << "|                                                         |" << endl;
-							std::cout << "|                      HAS GANADO !!!!!!                  |" << endl;
-							std::cout << "|                                                         |" << endl;
-							std::cout << "ñ---------------------------------------------------------ñ" << endl;
-
-							//pauseGame(); win(); nextLevel();
-							continueGame = false;
+					if ((((pointerToBlocks + i)->GetPosition().GetX() == thePlayer->GetPosition().GetX()) && ((pointerToBlocks + i)->GetPosition().GetZ() == thePlayer->GetPosition().GetZ())) && !((pointerToBlocks + i)->GetColor() == *(blockColor2 + level))) {
+						blockCounter++;
+						cout << endl << "   * Llevas " << blockCounter << " bloques coloreados" << endl;
+						(pointerToBlocks + i)->SetColor(*(blockColor2+level));
+						if (blockCounter == MAPSIZE) {
+							if (level == 6) {
+								std::cout << endl << endl << "ñ---------------------------------------------------------ñ" << endl;
+								std::cout << "|                                                         |" << endl;
+								std::cout << "|                      HAS GANADO !!!!!!                  |" << endl;
+								std::cout << "|                                                         |" << endl;
+								std::cout << "ñ---------------------------------------------------------ñ" << endl;							
+							}
+							else {
+								std::cout << endl << endl << "ñ---------------------------------------------------------ñ" << endl;
+								std::cout << "|                                                         |" << endl;
+								std::cout << "|                    HAS SUPERADO EL NIVEL                |" << endl;
+								std::cout << "|                                                         |" << endl;
+								std::cout << "ñ---------------------------------------------------------ñ" << endl;
+								nextLevel = true;
+								preCount = 90;
+							}
+							continueGame = false;							
 						}
 					}
 					/*
@@ -122,7 +173,6 @@ void Game::Update()
 					std::cout << "ñ---------------------------------------------------------ñ" << endl;
 				}
 				else {
-					//pauseGame();
 					continueGame = false;
 					std::cout << endl << endl << "ñ---------------------------------------------------------ñ" << endl;
 					std::cout << "|                                                         |" << endl;
@@ -134,7 +184,6 @@ void Game::Update()
 					std::cin >> continueGame;
 
 					if (continueGame) {
-						//restartGame();
 						thePlayer->SetLives(3);
 					}
 					else {
@@ -186,9 +235,9 @@ void Game::ProcessKeyPressed(const unsigned char& key, const int& xPosition, con
 			break;
 		default:
 			this->activeScene->ProcessKeyPressed(key, xPosition, yPosition);
-		}
+		}	
 	}
-	else {
+	else if (!continueGame){
 		this->activeScene->ProcessKeyPressed(key, xPosition, yPosition);
 	}
 }

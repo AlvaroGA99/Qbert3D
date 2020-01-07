@@ -22,7 +22,7 @@ void Game::Create()
 	int index = 0;
 	
 	blockColor = new Color[6]{ Color((0.2), (0.4), (0.7)), Color((1), (0), (0)), Color((0.4), (0.7), (0.2)), Color((0.4), (0.2), (0.7)), Color((0.7), (0.12), (0.24)), Color((0.5), (.8), (0.55))};
-	blockColor2 = new Color[6]{ Color(1, 0.5, 0), Color(0.5, 1, 0), Color((0.4), (0.7), (0.2)), Color((0.4), (0.2), (0.7)), Color((0.7), (0.12), (0.24)), Color((0.5), (.8), (0.55)) };
+	blockColor2 = new Color[6]{ Color(1, 0.5, 0), Color(0.5, 1, 0), Color((0.1), (0.2), (0.8)), Color((0.8), (0.5), (0.1)), Color((0.2), (0.62), (0.45)), Color((0.15), (.28), (0.855)) };
 	continueGame = false;
 	nextLevel = true;
 	level = -1;
@@ -150,6 +150,13 @@ void Game::Update()
 						std::cout << "hola buenos dias" << endl;
 					}
 					if (!(enemies + i)->GetIsDead()) {
+						//Jugador y enemigo chocan
+						if ((enemies + i)->GetPosition() == thePlayer->GetPosition()) {
+							thePlayer->SetPosition(Vector3D(-1, -1, -1));
+							thePlayer->SetSpeed(Vector3D(0, -.6, 0));
+							thePlayer->SetIsAffectedByGravity(true);
+						}
+
 						if (!((enemies + i)->GetReady())) {
 							(enemies + i)->CheckFall();
 						}

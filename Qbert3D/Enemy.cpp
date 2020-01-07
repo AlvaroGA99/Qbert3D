@@ -10,9 +10,11 @@ Vector3D Enemy::InitPos() {
 	return Vector3D(x,y,z);
 }
 
-void Enemy::CheckFall() {
+void Enemy::CheckFall() {	
 	if (this->GetPosition().GetY() <= 8 - this->GetPosition().GetX() - this->GetPosition().GetZ()) {
+		this->SetPreCount(25);
 		this->SetIsAffectedByGravity(false);
+		this->SetSpeed(Vector3D(0, 0, 0));
 		this->SetPosition(Vector3D(this->GetPosition().GetX(), 8 - this->GetPosition().GetX() - this->GetPosition().GetZ(), this->GetPosition().GetZ()));
 		ready = true;
 	}

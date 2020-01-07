@@ -30,6 +30,7 @@ private:
 	Color* blockColor2;
 	Enemy* enemies;
 	int ballCount;
+	int deadBall;
 	bool ready;
 public:
 

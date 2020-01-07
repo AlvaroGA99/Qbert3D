@@ -94,11 +94,12 @@ void Game::Update()
 				level++;
 				blockCounter = 0;
 				ballCount = 0;
-				preCount = 50;
+				deadBall = 0;
+				preCount = 51;
 				thePlayer->SetIsAffectedByGravity(false);
 				thePlayer->SetSpeed(Vector3D(0, 0, 0));
-				thePlayer->SetPosition(Vector3D(0, 8, 0));
-				for (int i = 0; i < MAPSIZE; i++) {
+				thePlayer->SetPosition(Vector3D(0, 8, 0));				
+				for (int i = 0; i < MAPSIZE; i++) {					
 					(pointerToBlocks + i)->SetColor(blockColor[level]);
 				}
 				continueGame = true;
@@ -133,24 +134,50 @@ void Game::Update()
 			if (!preCount) {
 				preCount = 50;
 				if (ballCount < (level + 7) / 3 && rand() % 10 <= 7+level/5) {
-					(enemies+ballCount)->SetPosition((enemies + ballCount)->InitPos());
-					(enemies + ballCount)->SetIsAffectedByGravity(true);
+					(enemies + deadBall)->SetPosition((enemies + deadBall)->InitPos());
+					(enemies + deadBall)->SetSpeed(Vector3D(0, -.3, 0));
+					(enemies + deadBall)->SetIsAffectedByGravity(true);
+					(enemies + deadBall)->SetIsDead(false);
+					std::cout << "Bola generada: " << deadBall << endl;
 					ballCount++;
+					deadBall++;					
 				}
 			}
 
 			if (ballCount) {
-				for (int i = 0; i < ballCount; i++) {
-					//if (!((enemies + i)->GetReady())){						
-						(enemies + i)->CheckFall();			
-					//}
-					(enemies + i)->UpdatePreCount();
-					if ((enemies + i)->GetPreCount() == 0) {
-						(enemies + i)->Move(2 + rand() % 1);
+				for (int i = 0; i < (level + 7) / 3; i++) {
+					if (nextLevel) {
+						std::cout << "hola buenos dias" << endl;
+					}
+					if (!(enemies + i)->GetIsDead()) {
+						if (!((enemies + i)->GetReady())) {
+							(enemies + i)->CheckFall();
+						}
+						else {
+							(enemies + i)->UpdatePreCount();
+							if ((enemies + i)->GetPreCount() == 0 && (enemies + i)->GetSpeed() == Vector3D(0, 0, 0)) {
+								(enemies + i)->Move(2 + rand() % 2);
+								(enemies + i)->SetPreCount(40 - level * 2);
+							}
+							else if ((enemies + i)->GetPosition().GetX() <= -1 || (enemies + i)->GetPosition().GetZ() <= -1 || (enemies + i)->GetPosition().GetX() + (enemies + i)->GetPosition().GetZ() >= 7) {
+								(enemies + i)->SetSpeed(Vector3D(0, -.3, 0));
+								(enemies + i)->SetIsAffectedByGravity(true);
+								(enemies + i)->SetReady(false);
+								(enemies + i)->SetIsDead(true);								
+								ballCount--;
+								if (deadBall > i) {
+									deadBall = i;
+								}
+								preCount = 50;
+							}
+							else if (((abs((enemies + i)->GetPosition().GetX() - (enemies + i)->GetPrevPosition().GetX()) >= 1) || abs((enemies + i)->GetPosition().GetZ() - (enemies + i)->GetPrevPosition().GetZ()) >= 1)) {
+								(enemies + i)->SetSpeed(Vector3D(0, 0, 0));
+								(enemies + i)->SetPosition(Vector3D(roundf((enemies + i)->GetPosition().GetX()), roundf((enemies + i)->GetPosition().GetY()), roundf((enemies + i)->GetPosition().GetZ())));
+							}
+						}
 					}
 				}
 			}
-			
 
 			preCount--;
 
@@ -168,6 +195,13 @@ void Game::Update()
 						cout << endl << "   * Llevas " << blockCounter << " bloques coloreados" << endl;
 						(pointerToBlocks + i)->SetColor(*(blockColor2+level));
 						if (blockCounter == MAPSIZE) {
+							for (int i = 0; i < (level + 7) / 3; i++) {
+								(enemies + i)->SetPosition(Vector3D(0, 0, 0));
+								(enemies + i)->SetIsAffectedByGravity(false);
+								(enemies + i)->SetIsDead(true);
+								(enemies + i)->SetReady(false);
+								(enemies + i)->SetSpeed(Vector3D(0, 0, 0));
+							}
 							if (level == 6) {
 								std::cout << endl << endl << "ñ---------------------------------------------------------ñ" << endl;
 								std::cout << "|                                                         |" << endl;
@@ -241,7 +275,7 @@ void Game::ProcessMouseMovement(const int& xPosition, const int& yPosition)
 
 void Game::ProcessKeyPressed(const unsigned char& key, const int& xPosition, const int& yPosition)
 {	
-	if (continueGame) {
+	if (continueGame) {		
 		switch (key) {
 		case'w':
 		case 'W':
@@ -269,7 +303,8 @@ void Game::ProcessKeyPressed(const unsigned char& key, const int& xPosition, con
 			break;
 		default:
 			this->activeScene->ProcessKeyPressed(key, xPosition, yPosition);
-		}	
+		}
+		thePlayer->SetPreCount(10 + level / 2);
 	}
 	else if (!continueGame){
 		this->activeScene->ProcessKeyPressed(key, xPosition, yPosition);

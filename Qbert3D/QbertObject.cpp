@@ -1,5 +1,6 @@
 #include "QbertObject.h"
 
+//Determina como se mueven los entes del juego
 void QbertObject::Move(int dir) {
 	this->SetPrevPosition(this->GetPosition());
 	if (!preCount) {

@@ -1,0 +1,33 @@
+
+Nivel: 1
+Numero de bloques: 0
+
+Nivel: 1
+Numero de bloques: 18
+
+Nivel: 3
+Numero de bloques: 7
+
+Nivel: 2
+Numero de bloques: 1
+
+Nivel: 2
+Numero de bloques: 0
+
+Nivel: 2
+Numero de bloques: 7
+
+Nivel: 2
+Numero de bloques: 3
+
+Nivel: 2
+Numero de bloques: 2
+
+Nivel: 2
+Numero de bloques: 3
+
+Nivel: 2
+Numero de bloques: 4
+
+Nivel: 3
+Numero de bloques: 26
